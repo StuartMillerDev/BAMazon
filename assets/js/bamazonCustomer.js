@@ -8,6 +8,8 @@ var connection = mysql.createConnection({
   password: "password",
   database: "bamazon"
 });
+
+// makeConnection();
 printAll();
 ask();
 function makeConnection(){
@@ -19,10 +21,11 @@ function makeConnection(){
 
 
 function printAll(){
-  makeConnection();
+  // makeConnection();
   connection.query("SELECT * FROM products",function(err,res){
     if(err){
         console.log(err);
+        connection.end();
       }
       else {
         // console.log(res);
@@ -36,7 +39,7 @@ function printAll(){
         });
       }
   });
-  connection.end();
+
 }
 
 
@@ -56,34 +59,32 @@ function ask(){
   ]).then(function(res){
     var id=res.id;
     var q=res.quantity;
-    checkStock(id);
+    var num=checkStock(res.id);
+    connection.query("select * from products where item_id=?", )
   });
-
 }
 
 
 function checkStock(id){
-  makeConnection();
-  connection.query("Select * from products where ?=?",[item_id,id],function(err,res){
+
+  connection.query("Select * from products where item_id=?",[id],function(err,res){
     if(err){
       console.log(err);
     }
     else{
-      console.log(res);
+      console.log(res[0].stock_quantity);
+      return res[0].stock_quantity;
     }
   });
-  connection.end();
 }
 
-// function updateStock(id, quantity){
-// makeConnection();
-// connection.query("update products set stock_quantity-? where ?=?",[quantity,item_id,id],function(err,res){
-// if (err) {
-//   console.log(err);
-// }
-// else {
-//   console.log(res);
-// }
-// });
-// connection.end();
-// }
+function updateStock(id, quantity){
+connection.query("update products set stock_quantity-? where item_id=?",[quantity,id],function(err,res){
+if (err) {
+  console.log(err);
+}
+else {
+  console.log("UPDATED: ",res);
+}
+});
+}
