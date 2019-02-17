@@ -65,13 +65,16 @@ function ask(){
           console.log(err);
         }
         else {
-          var temp=checkStock(id);
-          console.log(temp);
-          // if(){
-          //
-          // }
-          // updateStock(id,quantity);
-          // ask();
+          // var temp=checkStock(id);
+          // console.log(res[0].stock_quantity);
+          if(quantity<res[0].stock_quantity){
+            updateStock(id,quantity);
+            ask();
+          }
+          else {
+            console.log("Insufficient quantity!");
+            ask();
+          }
         }
       });
   });
