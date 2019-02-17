@@ -56,11 +56,24 @@ function ask(){
     message:"Input quantity to order",
     name:"quantity"
   }
-  ]).then(function(res){
-    var id=res.id;
-    var q=res.quantity;
-    var num=checkStock(res.id);
-    connection.query("select * from products where item_id=?", )
+]).then(function(response){
+
+      var id=response.id;
+      var quantity=response.quantity;
+      connection.query("select * from products where item_id=?",[id],function(err,res){
+        if(err){
+          console.log(err);
+        }
+        else {
+          var temp=checkStock(id);
+          console.log(temp);
+          // if(){
+          //
+          // }
+          // updateStock(id,quantity);
+          // ask();
+        }
+      });
   });
 }
 
@@ -72,19 +85,19 @@ function checkStock(id){
       console.log(err);
     }
     else{
-      console.log(res[0].stock_quantity);
       return res[0].stock_quantity;
     }
   });
 }
 
 function updateStock(id, quantity){
-connection.query("update products set stock_quantity-? where item_id=?",[quantity,id],function(err,res){
+connection.query("UPDATE products as p set p.stock_quantity= p.stock_quantity-? where p.item_id=?",[quantity,id],function(err,res){
 if (err) {
   console.log(err);
 }
 else {
-  console.log("UPDATED: ",res);
+  console.log("\nUPDATED");
 }
 });
+
 }
