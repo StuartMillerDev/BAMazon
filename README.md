@@ -10,4 +10,5 @@ INSTRUCTIONS:
   -  user: "root",
   -  password: "Your Password",
   -  database: "Your Database"
-5) Run 'node bamazonCustomer.js'
+5) Run npm i
+6) Run 'node bamazonCustomer.js'
